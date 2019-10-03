@@ -7,11 +7,11 @@ class Character {
   }
 
   drawImage() {
-    // image(this.img, this.x, this.y, 40, 40);
+    // image(this.img, this.x, this.y, 40, 20);
     const img = new Image();
     img.src = this.img;
     img.onload = () => {
-      ctx.drawImage(img, this.x, this.y, 40, 40);
+      ctx.drawImage(img, this.x, this.y, 60, 40);
     };
   }
 

@@ -1,0 +1,10 @@
+
+#body{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#text-area{
+    color: red;
+}
