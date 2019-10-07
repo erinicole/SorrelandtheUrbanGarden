@@ -5,6 +5,56 @@ import { allText, changePage } from "./text";
 window.Character = Character;
 
 window.addEventListener("DOMContentLoaded", event => {
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+var SpeechRecognitionEvent =
+  SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+    const pageWordsArray = allText()[1].text.split(" ");
+    const grammar =
+      "#JSGF V1.0; grammar pageWordsArray; public <word> = " +
+      pageWordsArray.join(" | ") +
+      " ;";
+    const recognition = new SpeechRecognition();
+    const speechRecognitionList = new SpeechGrammarList();
+    speechRecognitionList.addFromString(grammar, 1);
+    recognition.grammars = speechRecognitionList;
+    //recognition.continuous = false;
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    // const diagnostic = document.querySelector(".text-area");
+    // const wordBackground = document.querySelector("html");
+
+    let wordHTML = "";
+    pageWordsArray.forEach(function(word, index) {
+      console.log(word, index);
+      wordHTML +=
+        `<span class="word ${word.toLowerCase()}"> `+ word + " </span>";
+    });
+    const talkArea = document.getElementById("talk-area");
+    talkArea.innerHTML = wordHTML
+
+    document.body.onclick = function() {
+      recognition.start();
+      console.log("Ready to receive a color command.");
+    };
+
+    recognition.onresult = function(event) {
+        // debugger
+      const last = event.results.length - 1;
+      const spokenWords = event.results[last][0].transcript.toLowerCase().split(" ");
+      spokenWords.forEach( spokenWord => {
+          const htmlWord = document.getElementsByClassName(spokenWord)[0];
+          console.log(spokenWord)
+          htmlWord.classList.remove('word')
+          console.log(htmlWord)
+      })
+    //   diagnostic.textContent = "Result received: " + words + ".";
+    //   bg.style.backgroundColor = color;
+      console.log("Confidence: " + event.results[0][0].confidence);
+    };
+
   const width = document.documentElement.clientWidth;
   const height = document.documentElement.clientHeight;
   const canvasWidth = width / 2;
@@ -35,8 +85,7 @@ window.addEventListener("DOMContentLoaded", event => {
   for (let i = 0; i < 4; i++) {
     grassXs.push(i * 100);
   }
-  console.log(grassXs);
-   console.log("anyhting");
+
    document.onkeydown = event => {
      switch (event.keyCode) {
        case 37:

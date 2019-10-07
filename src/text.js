@@ -1,11 +1,11 @@
 export const allText = () => {
   const pages = {
     0: {
-      text: "TITLE TITLE TITLE",
+      text: "Garden",
       page: 0
     },
     1: {
-      text: "The sun did not shine. It was too wet to play. So we sat in the",
+      text: "The sun did not shine",
       page: 1
     },
     2: {
